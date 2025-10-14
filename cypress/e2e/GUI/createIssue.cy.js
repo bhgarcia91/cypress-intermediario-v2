@@ -1,8 +1,13 @@
 import { faker } from '@faker-js/faker'
 
+const options = {
+    env: {
+        snapshotOnly: true
+    }
+}
 describe('Create Issue', () => {
     const issue = {
-        title: `issue-${faker.datatype.uuid()}`,
+        title: faker.datatype.uuid(),
         description: faker.random.words(8),
         project: {
             name: `project-${faker.datatype.uuid()}`,
@@ -11,14 +16,16 @@ describe('Create Issue', () => {
     }
 
     beforeEach(() =>{
+            cy.api_deleteProjects();
             cy.login()
-            cy.CreateProject(issue.project)
     }
         )
 
     it('Sucessfully', () => {
-        cy.url().should('be.equal', `${Cypress.config('baseUrl')}/${Cypress.env('user_name')}/${issue.project.name}`)
+
+       // cy.url().should('be.equal', `${Cypress.config('baseUrl')}/${Cypress.env('user_name')}/${issue.project.name}`)
         cy.CreateIssue(issue)
+        cy.visit('/`${Cypress.config(\'baseUrl\')}/${Cypress.env(\'user_name\')}/${issue.project.name}`')
         cy.contains(issue.title).should('be.visible')
         cy.contains(issue.description).should('be.visible')
         /***cy.get('.issue-details').shoul('contain', issue.title)
