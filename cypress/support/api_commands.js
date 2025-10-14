@@ -47,3 +47,24 @@ Cypress.Commands.add('api_deleteProjects', () => {
         }))
     })
 })
+
+Cypress.Commands.add('api_createLabels', (projectid, label) => {
+     cy.request({
+        method: 'POST',
+        url: `/api/v4/projects/${projectid}/labels`,
+        body: {
+            name : label.name,
+            color : label.color
+        },
+        headers: { Authorization: accessToken }
+    })
+})
+
+Cypress.Commands.add('api_createMilestone', (projectId, milestone) => {
+    cy.request({
+        method: 'POST',
+        url: `/api/v4/projects/${projectId}/milestones`,
+        body: { title: milestone.title },
+        headers: { Authorization: accessToken },
+    })
+})
